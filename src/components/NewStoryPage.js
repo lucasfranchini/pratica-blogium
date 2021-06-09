@@ -10,7 +10,16 @@ export default function NewStoryPage() {
   const [isSaveButtonDisabled, setSaveButtonDisable] = useState(false);
   const history = useHistory();
 
-  function onPostSaveButtonClick() {}
+  function onPostSaveButtonClick() {
+    setSaveButtonDisable(true);
+    const post = {
+      title,
+      coverUrl,
+      content: content.replace('<p>','').replace('</p>','')
+    }
+    const promise = axios.post('http://localhost:4000/posts',post);
+    promise.then(()=>setSaveButtonDisable(false));
+  }
 
   return (
     <PostManipulation
