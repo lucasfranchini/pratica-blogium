@@ -18,7 +18,10 @@ export default function NewStoryPage() {
       content: content.replace('<p>','').replace('</p>','')
     }
     const promise = axios.post('http://localhost:4000/posts',post);
-    promise.then(()=>setSaveButtonDisable(false));
+    promise.then(()=>{
+      setSaveButtonDisable(false);
+      history.push('/');
+    });
   }
 
   return (

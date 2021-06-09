@@ -3,24 +3,20 @@ import styled from 'styled-components';
 
 import Comment from './Comment';
 import AddComment from './AddComment';
+import axios from 'axios';
 
 export default function PostComments({ postId }) {
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    setComments([{
-      id: 1,
-      postId: postId,
-      author: 'João',
-      content: 'Muito bom esse post! Tá de parabéns'
-    }, {
-      id: 2,
-      postId: postId,
-      author: 'Maria',
-      content: 'Como faz pra dar palmas?'
-    }])
+    const promise = axios.get(`http://localhost:4000/posts/${postId}/comments`);
+    promise.then(res=>{setComments(res.data);})
   }, [postId]);
-  
+
+  function loadComments (newcomment){
+    setComments([...comments,newcomment])
+  }
+
   return (
     <Container>
       <Title>Comments</Title>
@@ -29,7 +25,7 @@ export default function PostComments({ postId }) {
          ? comments.map(c => <Comment comment={c} key={c.id} />)
          : "No comments yet. Be the first to comment!"
       }
-      <AddComment postId={postId} />
+      <AddComment postId={postId} loadComments={loadComments} />
     </Container>
   );
 }
