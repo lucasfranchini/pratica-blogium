@@ -14,22 +14,21 @@ export default function PostEditPage() {
   const history = useHistory();
 
   useEffect(() => {
-    const post = {
-      id: 1,
-      title: 'Hello World',
-      coverUrl: 'https://miro.medium.com/max/1024/1*OohqW5DGh9CQS4hLY5FXzA.png',
-      contentPreview: 'Esta é a estrutura de um post esperado pelo front-end',
-      content: 'Este é o conteúdo do post, o que realmente vai aparecer na página do post...'
-    };
-
-    setPost(post);
-
-    setTitle(post.title);
-    setCoverUrl(post.coverUrl);
-    setContent(post.content);
+    const promise = axios.get(`http://localhost:4000/posts/${postId}`);
+    promise.then(res =>{
+      setPost(res.data);
+      setTitle(res.data.title);
+      setCoverUrl(res.data.coverUrl);
+      setContent(res.data.content);
+    });
+    
   }, [postId]);
 
-  function onPostSaveButtonClick() {}
+  function onPostSaveButtonClick() {
+    const post = {title,coverUrl,content};
+    const promise = axios.put(`http://localhost:4000/posts/${postId}`,post);
+    promise.then(()=>history.push(`/posts/${postId}`));
+  }
 
   if (!post || !content) return <Spinner />;
 
