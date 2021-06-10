@@ -18,7 +18,7 @@ export default function PostShowPage() {
     const promise = axios.get(`http://localhost:4000/posts/${postId}`);
     promise.then(res =>{
       setPost(res.data);
-    })
+    });
   }, [postId]);
 
   function onEditButtonClick() {
@@ -26,8 +26,10 @@ export default function PostShowPage() {
   }
 
   function onDeleteButtonClick() {
-    alert('No futuro, ao clicar neste botão o post vai ser excluído de verdade :)');
-    history.push('/');
+    const promise = axios.delete(`http://localhost:4000/posts/${postId}`);
+    promise.then(() =>{
+      history.push('/');
+    });   
   }
 
   if (!post) return <Spinner />;
